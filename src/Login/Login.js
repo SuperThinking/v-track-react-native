@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import { Provider, connect, MergeProps } from "react-redux";
+import { colors } from "../theme";
 
 class Login extends PureComponent {
   constructor(props) {
@@ -36,11 +37,25 @@ class Login extends PureComponent {
             50
           );
         } else {
-          var token = "SomeToken";
-          this.props.authSuccess(token);
+          var token = "TOKEN";
+          this.props.authSuccess(
+            token,
+            x.data.name,
+            this.state.id,
+            this.state.pass,
+            x.data.subjects,
+            "ATTENDANCE"
+          );
         }
       })
       .catch(x => {
+        ToastAndroid.showWithGravityAndOffset(
+          "Network Error",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
         console.log("Login Server Error", x);
       });
   };
@@ -48,7 +63,12 @@ class Login extends PureComponent {
   render() {
     return (
       <KeyboardAvoidingView
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: colors.loginBackgroundColor
+        }}
         behavior="padding"
         enabled
       >
@@ -56,20 +76,43 @@ class Login extends PureComponent {
           placeholder="Registration Number"
           onChangeText={id => this.setState({ id })}
           value={this.state.id}
-          style={{ textAlign: "center" }}
+          style={styles.input}
         />
         <TextInput
           secureTextEntry={true}
           placeholder="Password"
           onChangeText={pass => this.setState({ pass })}
           value={this.state.pass}
-          style={{ textAlign: "center" }}
+          style={styles.input}
         />
-        <Button color="#901000" title="Login" onPress={this.attemptLogin} />
+        <Button
+          style={styles.button}
+          title="Login"
+          onPress={this.attemptLogin}
+        />
       </KeyboardAvoidingView>
     );
   }
 }
+const styles = StyleSheet.create({
+  input: {
+    fontFamily: "Lato",
+    textAlign: "center",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#ff6262",
+    borderRadius: 4,
+    width: 300,
+    fontSize: 20,
+    padding: 10,
+    marginBottom: 20
+  },
+  button: {
+    backgroundColor: colors.loginButtonBackgroundColor,
+    paddingTop: 25,
+    width: 150
+  }
+});
 const mapStateToProps = (state, ownProps) => {
   return {};
 };
@@ -78,12 +121,18 @@ export const actionCreator = (type, payload = null) => ({ type, payload });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    authSuccess: token => {
-      AsyncStorage.multiSet([["token", token], ["authenticated", 1]]).catch(
-        x => {
-          console.log("Login Auth", x);
-        }
-      );
+    authSuccess: (token, name, id, pass, attendance, timeTable) => {
+      AsyncStorage.multiSet([
+        ["token", token],
+        ["authenticated", "1"],
+        ["name", name],
+        ["id", id],
+        ["pass", pass],
+        ["attendance", JSON.stringify(attendance)],
+        ["timeTable", JSON.stringify(timeTable)]
+      ]).catch(x => {
+        console.log("Login Auth Error", x);
+      });
       dispatch(actionCreator("LOGIN_SUCCESS"));
     }
   };

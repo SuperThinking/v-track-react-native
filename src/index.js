@@ -3,14 +3,16 @@ import React from "react";
 import Attendance from "./Attendance/Attendance";
 import TimeTable from "./TimeTable/TimeTable";
 import Subject from "./Attendance/Subject";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import {
   createStackNavigator,
   createBottomTabNavigator,
   createAppContainer
 } from "react-navigation";
+
 import { colors } from "./theme";
-import ReduxAttendance from "./Attendance/reduxAttendance";
+import About from "./About/About";
 
 const AttendanceNav = createStackNavigator(
   {
@@ -20,7 +22,7 @@ const AttendanceNav = createStackNavigator(
   {
     navigationOptions: {
       headerStyle: {
-          backgroundColor: colors.primary
+        backgroundColor: colors.primary
       },
       headerTintColor: "#fff"
     }
@@ -34,18 +36,42 @@ const TimeTableNav = createStackNavigator(
   {
     navigationOptions: {
       headerStyle: {
-          backgroundColor: colors.primary
+        backgroundColor: colors.primary
       },
       headerTintColor: "#fff"
     }
   }
 );
 
-const Tabs = createBottomTabNavigator({
-    Attendance: {screen: Attendance},
-    TimeTable: {screen: TimeTable},
-    Redux_Attendance: {screen: ReduxAttendance}
-})
+const Tabs = createBottomTabNavigator(
+  {
+    Attendance: {
+      screen: Attendance,
+      navigationOptions: () => ({
+        tabBarIcon: () => <Icon name="line-chart" size={30} color="#000" />
+      })
+    },
+    TimeTable: {
+      screen: TimeTable,
+      navigationOptions: () => ({
+        tabBarIcon: () => <Icon name="table" size={30} color="#000" />
+      })
+    },
+    About: {
+      screen: About,
+      navigationOptions: () => ({
+        tabBarIcon: () => <Icon name="info-circle" size={30} color="#000" />
+      })
+    }
+  },
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: colors.bottomNavBarBackgroundColor
+      }
+    }
+  }
+);
 
 const AppContainer = createAppContainer(Tabs);
 

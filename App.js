@@ -1,20 +1,43 @@
 import React, { PureComponent } from "react";
-import { AsyncStorage, StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import {
+  AsyncStorage,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Text
+} from "react-native";
+
+import { PacmanIndicator } from "react-native-indicators";
+
 import Tabs from "./src";
 import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import { authStateReducer, actionCreator } from "./src/Login/Login";
+import { Font } from "expo";
+import { colors } from "./src/theme";
 
 class AppRoot extends PureComponent {
+  state = {
+    fontsLoaded: 0
+  };
+
   componentDidMount() {
     this.props.checkLogin();
+    Font.loadAsync({
+      Playfair: require("./assets/fonts/PlayfairDisplay-Black.ttf"),
+      Lato: require("./assets/fonts/Lato-Black.ttf")
+    }).then(() => {
+      this.setState({ fontsLoaded: 1 });
+    });
   }
 
   render() {
     const { app_started, authenticated } = this.props.authState;
-    return app_started ? this._renderAppRoot(authenticated) : this._renderSplash();
+    return app_started && this.state.fontsLoaded
+      ? this._renderAppRoot(authenticated)
+      : this._renderSplash();
   }
 
   _renderAppRoot(authenticated) {
@@ -24,8 +47,9 @@ class AppRoot extends PureComponent {
   _renderSplash() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator size="large" />
-        <Text children="loading.." />
+        {/* <ActivityIndicator size="large" /> */}
+        <PacmanIndicator color={colors.loaderMain} />
+        <Text children="V-TRACK" />
       </View>
     );
   }
