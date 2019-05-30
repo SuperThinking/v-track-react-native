@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   KeyboardAvoidingView
 } from "react-native";
+import SpinnerButton from "react-native-spinner-button";
 import { Provider, connect, MergeProps } from "react-redux";
 import { colors } from "../theme";
 
@@ -18,13 +19,19 @@ class Login extends PureComponent {
     super(props);
     this.state = {
       id: "16BCE1111",
-      pass: "#23Oct1970#"
+      pass: "#23Oct1970#",
+      defaultLoading: false
     };
+  }
+
+  componentDidMount() {
+    this.setState({ defaultLoading: false });
   }
 
   attemptLogin = () => {
     //Validation and Server Request
     // var data = this.state;
+    this.setState({ defaultLoading: true });
     Axios.post("http://192.168.43.38:5000/", this.state)
       .then(x => {
         console.log("Content Arrived", JSON.stringify(x.data));
@@ -49,6 +56,7 @@ class Login extends PureComponent {
         }
       })
       .catch(x => {
+        this.setState({ defaultLoading: false });
         ToastAndroid.showWithGravityAndOffset(
           "Network Error",
           ToastAndroid.LONG,
@@ -85,11 +93,21 @@ class Login extends PureComponent {
           value={this.state.pass}
           style={styles.input}
         />
-        <Button
+        <SpinnerButton
+          buttonStyle={styles.button}
+          isLoading={this.state.defaultLoading}
+          onPress={this.attemptLogin}
+          indicatorCount={10}
+          spinnerType="DotIndicator"
+          size={8}
+        >
+          <Text style={styles.buttonInput}>Login</Text>
+        </SpinnerButton>
+        {/* <Button
           style={styles.button}
           title="Login"
           onPress={this.attemptLogin}
-        />
+        /> */}
       </KeyboardAvoidingView>
     );
   }
@@ -100,7 +118,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: "#ff6262",
+    borderColor: "#FFFFFF",
     borderRadius: 4,
     width: 300,
     fontSize: 20,
@@ -108,9 +126,15 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   button: {
+    textAlign: "center",
     backgroundColor: colors.loginButtonBackgroundColor,
-    paddingTop: 25,
-    width: 150
+    width: 80,
+    borderRadius: 3
+  },
+  buttonInput: {
+    textAlign: "center",
+    color: colors.loginButtonTextColor,
+    fontSize: 16
   }
 });
 const mapStateToProps = (state, ownProps) => {

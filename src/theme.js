@@ -7,10 +7,11 @@ const colors1 = {
   loginBackgroundColor: "#4EA0D1",
   loaderMain: "#7977d6",
   loaderAttendance: "#f46841",
-  logoutButtonBackgroundColor: "#901000"
+  logoutButtonBackgroundColor: "#901000",
+  bottomNavBarBackgroundColor: "#FFFFFF"
 };
 
-const colors = {
+const colors2 = {
   primary: "#000",
   headerTextColor: "#D1D1D1",
   headerBackgroundColor: "#4C4C4C",
@@ -21,6 +22,19 @@ const colors = {
   loaderAttendance: "#f46841",
   logoutButtonBackgroundColor: "#901000",
   bottomNavBarBackgroundColor: "#DBDBDB"
+};
+
+const colors = {
+  primary: "#000",
+  headerTextColor: "#FFFFFF",
+  headerBackgroundColor: "#262626",
+  loginButtonBackgroundColor: "#17729D",
+  loginButtonTextColor: "#fff",
+  loginBackgroundColor: "#4392F1",
+  loaderMain: "#7977d6",
+  loaderAttendance: "#f46841",
+  logoutButtonBackgroundColor: "#901000",
+  bottomNavBarBackgroundColor: "#FFFFFF"
 };
 
 export { colors };

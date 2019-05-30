@@ -14,7 +14,7 @@ export default (AppNavigation = authenticated =>
             headerStyle: { backgroundColor: colors.headerBackgroundColor },
             headerTintColor: colors.headerTextColor,
             headerTitleStyle: {
-              fontFamily: "Playfair",
+              fontFamily: "Lato",
               fontWeight: "200"
             }
           }
@@ -26,7 +26,7 @@ export default (AppNavigation = authenticated =>
             headerStyle: { backgroundColor: colors.headerBackgroundColor },
             headerTintColor: colors.headerTextColor,
             headerTitleStyle: {
-              fontFamily: "Playfair",
+              fontFamily: "Lato",
               fontWeight: "200"
             }
           }

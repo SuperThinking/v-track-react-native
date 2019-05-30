@@ -93,22 +93,25 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   danger: {
+    margin:1,
+    borderColor: "#d68080",
     backgroundColor: "#fc9797",
     borderRadius: 1,
-    borderWidth: 1,
-    borderColor: "#fff"
+    borderWidth: 1
   },
   warning: {
+    margin:1,
+    borderColor: "#e5e389",
     backgroundColor: "#fcfa97",
     borderRadius: 1,
-    borderWidth: 1,
-    borderColor: "#fff"
+    borderWidth: 1
   },
   safe: {
+    margin:1,
     backgroundColor: "#97fcae",
-    borderRadius: 1,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#fff"
+    borderColor: "#86e09b"
   },
   textItemKey: {
     fontSize: 15
