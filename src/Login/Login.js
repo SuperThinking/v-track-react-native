@@ -45,13 +45,21 @@ class Login extends PureComponent {
           );
         } else {
           var token = "TOKEN";
+          var tt = {};
+          for (j in x.data.subjects) {
+            let y = x.data.subjects[j];
+            let tem = y[8].split("+");
+            for (let i in tem) {
+              tt[tem[i]] = [y[0], y[1], tem[i]];
+            }
+          }
           this.props.authSuccess(
             token,
             x.data.name,
             this.state.id,
             this.state.pass,
             x.data.subjects,
-            "ATTENDANCE"
+            tt
           );
         }
       })

@@ -7,28 +7,35 @@ import {
   ScrollView,
   SafeAreaView,
   AsyncStorage,
-  ActivityIndicator
+  RefreshControl,
+  ToastAndroid
 } from "react-native";
+
+import ProgressCircle from "react-native-progress-circle";
 
 import { PulseIndicator } from "react-native-indicators";
 import { colors } from "../theme";
+import Axios from "axios";
 
 export default class Attendance extends React.Component {
   state = {
-    items: ""
+    items: "",
+    refreshing: false,
+    id: "",
+    pass: ""
   };
 
   componentDidMount() {
-    this.getAttendance().then(items => {
-      this.setState({ items });
+    this.getAttendance().then(([items, id, pass]) => {
+      this.setState({ items, id, pass });
     });
   }
 
   getAttendance = () => {
     return new Promise((resolve, reject) => {
-      AsyncStorage.getItem("attendance")
+      AsyncStorage.multiGet(["attendance", "id", "pass"])
         .then(res => {
-          resolve(JSON.parse(res));
+          resolve([JSON.parse(res[0][1]), res[1][1], res[2][1]]);
         })
         .catch(err => reject(err));
     });
@@ -36,15 +43,75 @@ export default class Attendance extends React.Component {
 
   xHelper = x => {
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "column", flex: 1 }}>
         <Text numberOfLines={1} style={styles.textItemKey}>
-          {x[0]} :{" "}
+          {x[0]}
         </Text>
         <Text numberOfLines={1} style={styles.textItemValue}>
           {x[1]}
         </Text>
+        <Text numberOfLines={1} style={styles.textItemValue}>
+          {"Out of " + x[2] + " classes, " + x[3] + " attended"}
+        </Text>
       </View>
     );
+  };
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    Axios.post("http://192.168.43.38:5000/", {
+      id: this.state.id,
+      pass: this.state.pass
+    })
+      .then(x => {
+        if (x.data.Error) {
+          ToastAndroid.showWithGravityAndOffset(
+            x.data.Error.message,
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+          );
+        } else {
+          var setAtt = new Promise((resolve, reject) => {
+            AsyncStorage.setItem("attendance", JSON.stringify(x.data.subjects))
+              .then(x => {
+                console.log("Attendance Updated : 1 ");
+                resolve(true);
+              })
+              .catch(err => {
+                console.log(err);
+                ToastAndroid.showWithGravityAndOffset(
+                  "Unable to update attendance",
+                  ToastAndroid.LONG,
+                  ToastAndroid.BOTTOM,
+                  25,
+                  50
+                );
+                reject(err);
+              });
+          });
+          setAtt.then(x => {
+            if (x) {
+              this.getAttendance().then(([items, id, pass]) => {
+                console.log("Attendance Updated : 2");
+                this.setState({ items, id, pass, refreshing: false });
+              });
+            }
+          });
+        }
+      })
+      .catch(x => {
+        this.setState({ defaultLoading: false });
+        ToastAndroid.showWithGravityAndOffset(
+          "Network Error",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+        console.log("Login Server Error", x);
+      });
   };
 
   render() {
@@ -61,17 +128,45 @@ export default class Attendance extends React.Component {
                   : styles.danger
               }
             >
-              {this.xHelper(["Course Code", x[0]])}
+              <ProgressCircle
+                percent={parseInt(x[5])}
+                radius={35}
+                borderWidth={8}
+                color={
+                  x[5] > 80 ? "#24bc1c" : x[5] >= 75 ? "#bca61c" : "#bc1c1c"
+                }
+                shadowColor="#cecccc"
+                bgColor="#fff"
+                outerCircleStyle={{ margin: 5 }}
+              >
+                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                  {x[5] + "%"}
+                </Text>
+              </ProgressCircle>
+              {this.xHelper([x[1], x[0], x[4], x[3]])}
+              {/* {this.xHelper(["Course Code", x[0]])}
               {this.xHelper(["Course Name", x[1]])}
               {this.xHelper(["Classes Attended", x[3]])}
               {this.xHelper(["Total Classes", x[4]])}
-              {this.xHelper(["Attendance %", x[5] + "%"])}
+              {this.xHelper(["Attendance %", x[5] + "%"])} */}
             </View>
           );
         })
       : this._renderSplash();
 
-    return <ScrollView>{x}</ScrollView>;
+    return (
+      <ScrollView
+        style={{ backgroundColor: "#000" }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
+        {x}
+      </ScrollView>
+    );
   }
 
   _renderSplash() {
@@ -93,32 +188,40 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   danger: {
-    margin:1,
+    padding: 2,
+    margin: 4,
     borderColor: "#d68080",
     backgroundColor: "#fc9797",
-    borderRadius: 1,
-    borderWidth: 1
+    borderRadius: 3,
+    borderWidth: 1,
+    flexDirection: "row"
   },
   warning: {
-    margin:1,
+    padding: 2,
+    margin: 4,
     borderColor: "#e5e389",
     backgroundColor: "#fcfa97",
-    borderRadius: 1,
-    borderWidth: 1
+    borderRadius: 3,
+    borderWidth: 1,
+    flexDirection: "row"
   },
   safe: {
-    margin:1,
+    padding: 2,
+    margin: 4,
     backgroundColor: "#97fcae",
-    borderRadius: 4,
+    borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#86e09b"
+    borderColor: "#86e09b",
+    flexDirection: "row"
   },
   textItemKey: {
-    fontSize: 15
+    fontFamily: "Tinos",
+    flex: 1,
+    fontSize: 17
   },
   textItemValue: {
+    fontFamily: "Tinos",
     flex: 1,
-    fontWeight: "bold",
-    fontSize: 15
+    fontSize: 16
   }
 });

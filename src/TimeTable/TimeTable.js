@@ -6,11 +6,13 @@ import {
     StyleSheet
 } from 'react-native'
 
+import Days from './dayNav'
+
 export default class TimeTable extends React.Component {
     render() {
         return (
             <View>
-                <Text>Hello from TimeTable</Text>
+                <Days />
             </View>
         )
     }
