@@ -26,6 +26,8 @@ class AppRoot extends PureComponent {
   componentDidMount() {
     this.props.checkLogin();
     Font.loadAsync({
+      RobotoB: require("./assets/fonts/Roboto-Black.ttf"),
+      RobotoR: require("./assets/fonts/Roboto-Regular.ttf"),
       Tinos: require("./assets/fonts/Tinos-Bold.ttf"),
       Playfair: require("./assets/fonts/PlayfairDisplay-Black.ttf"),
       Lato: require("./assets/fonts/Lato-Black.ttf")

@@ -18,7 +18,7 @@ class About extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: "user"
     };
   }
 

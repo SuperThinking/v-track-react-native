@@ -10,13 +10,14 @@ export default (AppNavigation = authenticated =>
         login: {
           getScreen: () => Login,
           navigationOptions: {
-            title: "V-TRACK",
-            headerStyle: { backgroundColor: colors.headerBackgroundColor },
-            headerTintColor: colors.headerTextColor,
-            headerTitleStyle: {
-              fontFamily: "Lato",
-              fontWeight: "200"
-            }
+            header: null
+            // title: "V-TRACK",
+            // headerStyle: { backgroundColor: colors.headerBackgroundColor },
+            // headerTintColor: colors.headerTextColor,
+            // headerTitleStyle: {
+            //   fontFamily: "Lato",
+            //   fontWeight: "200"
+            // }
           }
         },
         dashboard: {

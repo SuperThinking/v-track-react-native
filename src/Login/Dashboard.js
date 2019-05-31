@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 
 import { View, Text, StyleSheet, Button, AsyncStorage } from "react-native";
-import { Provider, connect, MergeProps } from  'react-redux';
-import Tabs from '../index'
+import { Provider, connect, MergeProps } from "react-redux";
+import Tabs from "../index";
 
 class Dashboard extends PureComponent {
   constructor(props) {
@@ -10,9 +10,7 @@ class Dashboard extends PureComponent {
   }
 
   render() {
-    return (
-      <Tabs logout={this.attemptLogout}/>
-    );
+    return <Tabs logout={this.attemptLogout} />;
   }
 }
 const mapStateToProps = (state, ownProps) => {

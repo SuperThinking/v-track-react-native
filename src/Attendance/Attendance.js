@@ -43,7 +43,14 @@ export default class Attendance extends React.Component {
 
   xHelper = x => {
     return (
-      <View style={{ flexDirection: "column", flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "column",
+          flex: 1,
+          borderLeftWidth: 2,
+          borderColor: "#1B367C"
+        }}
+      >
         <Text numberOfLines={1} style={styles.textItemKey}>
           {x[0]}
         </Text>
@@ -137,18 +144,15 @@ export default class Attendance extends React.Component {
                 }
                 shadowColor="#cecccc"
                 bgColor="#fff"
-                outerCircleStyle={{ margin: 5 }}
+                outerCircleStyle={{
+                  margin: 5
+                }}
               >
                 <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                   {x[5] + "%"}
                 </Text>
               </ProgressCircle>
               {this.xHelper([x[1], x[0], x[4], x[3]])}
-              {/* {this.xHelper(["Course Code", x[0]])}
-              {this.xHelper(["Course Name", x[1]])}
-              {this.xHelper(["Classes Attended", x[3]])}
-              {this.xHelper(["Total Classes", x[4]])}
-              {this.xHelper(["Attendance %", x[5] + "%"])} */}
             </View>
           );
         })
@@ -215,12 +219,14 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   textItemKey: {
-    fontFamily: "Tinos",
+    margin: 5,
+    fontFamily: "RobotoB",
     flex: 1,
     fontSize: 17
   },
   textItemValue: {
-    fontFamily: "Tinos",
+    margin: 5,
+    fontFamily: "RobotoR",
     flex: 1,
     fontSize: 16
   }
