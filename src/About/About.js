@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Linking
 } from "react-native";
+import { PulseIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
 import { colors } from "../theme";
 
@@ -18,7 +19,7 @@ class About extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      name: "user"
+      name: ""
     };
   }
 
@@ -40,8 +41,22 @@ class About extends PureComponent {
 
   attemptLogout = () => this.props.authlogout();
 
-  render() {
+  _renderSplash() {
     return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <PulseIndicator color={colors.loaderAttendance} />
+      </View>
+    );
+  }
+
+  render() {
+    return this.state.name ? (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text
           style={{
@@ -54,7 +69,6 @@ class About extends PureComponent {
             "Hello " +
             this.state.name +
             ", for any suggestions/queries you can contact us on superthinkingdev@gmail.com"
-            // ", We would like to tell you that application is not developed/maintained by Vellore Institute of Technology but by an independent body. Hence, VIT is not to be blamed for any mistake this application does. You can still login to https://academicscc.vit.ac.in/student/home.asp for checking your attendance and time-table."
           }
         />
         <Icon
@@ -62,9 +76,7 @@ class About extends PureComponent {
           name="envelope"
           size={30}
           color="#000"
-          onPress={() =>
-            Linking.openURL("mailto:superthinkingdev@gmail.com")
-          }
+          onPress={() => Linking.openURL("mailto:superthinkingdev@gmail.com")}
         />
         <Button
           style={{ margin: 20 }}
@@ -73,6 +85,8 @@ class About extends PureComponent {
           onPress={this.attemptLogout}
         />
       </View>
+    ) : (
+      this._renderSplash()
     );
   }
 }

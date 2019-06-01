@@ -4,11 +4,11 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  Text
+  Text,
+  KeyboardAvoidingView
 } from "react-native";
-
+import SvgComponent from "./src/Login/SvgComponent";
 import { PacmanIndicator } from "react-native-indicators";
-
 import Tabs from "./src";
 import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
@@ -49,11 +49,19 @@ class AppRoot extends PureComponent {
   }
   _renderSplash() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        {/* <ActivityIndicator size="large" /> */}
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: colors.loginBackgroundColor
+        }}
+        behavior="padding"
+        enabled
+      >
+        <SvgComponent />
         <PacmanIndicator color={colors.loaderMain} />
-        <Text children="V-TRACK" />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

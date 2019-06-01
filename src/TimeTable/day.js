@@ -91,7 +91,12 @@ export default (Day = x =>
     _renderSplash() {
       return (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#000"
+          }}
         >
           <PulseIndicator color={colors.loaderAttendance} />
         </View>

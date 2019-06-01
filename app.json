@@ -17,6 +17,12 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.superthinkingdev.vtrack",
+      "versionCode": 1,
+      "icon": "./assets/Icon-256.png",
+      "permissions": []
+    },
     "ios": {
       "supportsTablet": true
     }
