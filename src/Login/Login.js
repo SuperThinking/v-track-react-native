@@ -8,11 +8,13 @@ import {
   AsyncStorage,
   TextInput,
   ToastAndroid,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Image
 } from "react-native";
 import SpinnerButton from "react-native-spinner-button";
 import { Provider, connect, MergeProps } from "react-redux";
 import { colors } from "../theme";
+import SvgComponent from "./SvgComponent";
 
 class Login extends PureComponent {
   constructor(props) {
@@ -88,6 +90,7 @@ class Login extends PureComponent {
         behavior="padding"
         enabled
       >
+        <SvgComponent />
         <TextInput
           placeholder="Registration Number"
           onChangeText={id => this.setState({ id })}
@@ -111,11 +114,6 @@ class Login extends PureComponent {
         >
           <Text style={styles.buttonInput}>Login</Text>
         </SpinnerButton>
-        {/* <Button
-          style={styles.button}
-          title="Login"
-          onPress={this.attemptLogin}
-        /> */}
       </KeyboardAvoidingView>
     );
   }
