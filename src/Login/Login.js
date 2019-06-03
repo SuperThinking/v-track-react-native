@@ -38,6 +38,7 @@ class Login extends PureComponent {
       .then(x => {
         console.log("Content Arrived", JSON.stringify(x.data));
         if (x.data.Error) {
+          this.setState({ defaultLoading: false });
           ToastAndroid.showWithGravityAndOffset(
             x.data.Error.message,
             ToastAndroid.LONG,
