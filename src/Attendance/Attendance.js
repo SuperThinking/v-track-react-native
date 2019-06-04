@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import ProgressCircle from "react-native-progress-circle";
-
+import Icon from "react-native-vector-icons/FontAwesome";
 import { PulseIndicator } from "react-native-indicators";
 import { colors } from "../theme";
 import Axios from "axios";
@@ -54,12 +54,24 @@ export default class Attendance extends React.Component {
         <Text numberOfLines={1} style={styles.textItemKey}>
           {x[0]}
         </Text>
-        <Text numberOfLines={1} style={styles.textItemValue}>
-          {x[1]}
-        </Text>
-        <Text numberOfLines={1} style={styles.textItemValue}>
-          {"Out of " + x[2] + " classes, " + x[3] + " attended"}
-        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text numberOfLines={1} style={styles.textItemValue}>
+            {x[1]}
+          </Text>
+          <Text numberOfLines={1} style={styles.textItemValue}>
+            {x[4]}
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text numberOfLines={1} style={styles.textItemValue}>
+            {x[3] + " of " + x[2] + " attended"}
+          </Text>
+          {x[5][0] === "L" ? (
+            <Icon style={styles.textItemValue} name="flask" size={16} color="#000" />
+          ) : (
+            <Icon style={styles.textItemValue} name="book" size={16} color="#000" />
+          )}
+        </View>
       </View>
     );
   };
@@ -81,7 +93,7 @@ export default class Attendance extends React.Component {
           );
         } else {
           var setAtt = new Promise((resolve, reject) => {
-            AsyncStorage.setItem("attendance", JSON.stringify(x.data.subjects))
+            AsyncStorage.setItem("attendance", JSON.stringify(x.data.subjects.sort()))
               .then(x => {
                 console.log("Attendance Updated : 1 ");
                 resolve(true);
@@ -126,7 +138,7 @@ export default class Attendance extends React.Component {
       ? this.state.items.map(x => {
           return (
             <View
-              key={x[0]}
+              key={x[0] + x[8]}
               style={
                 x[5] > 80
                   ? styles.safe
@@ -152,7 +164,7 @@ export default class Attendance extends React.Component {
                   {x[5] + "%"}
                 </Text>
               </ProgressCircle>
-              {this.xHelper([x[1], x[0], x[4], x[3]])}
+              {this.xHelper([x[1], x[0], x[4], x[3], x[9], x[8]])}
             </View>
           );
         })

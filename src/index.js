@@ -13,6 +13,8 @@ import {
   createMaterialTopTabNavigator
 } from "react-navigation";
 
+import Timer from './pushNotification';
+
 import { colors } from "./theme";
 import About from "./About/About";
 

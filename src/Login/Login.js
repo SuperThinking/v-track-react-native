@@ -49,11 +49,12 @@ class Login extends PureComponent {
         } else {
           var token = "TOKEN";
           var tt = {};
-          for (j in x.data.subjects) {
-            let y = x.data.subjects[j];
+          let subs = x.data.subjects.sort();
+          for (j in subs) {
+            let y = subs[j];
             let tem = y[8].split("+");
             for (let i in tem) {
-              tt[tem[i]] = [y[0], y[1], tem[i]];
+              tt[tem[i]] = [y[0], y[1], tem[i], y[9]];
             }
           }
           this.props.authSuccess(
@@ -61,7 +62,7 @@ class Login extends PureComponent {
             x.data.name,
             this.state.id,
             this.state.pass,
-            x.data.subjects,
+            subs,
             tt
           );
         }
@@ -121,6 +122,7 @@ class Login extends PureComponent {
 }
 const styles = StyleSheet.create({
   input: {
+    color: "#fff",
     fontFamily: "Lato",
     textAlign: "center",
     borderWidth: 1,
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
   button: {
     textAlign: "center",
     backgroundColor: colors.loginButtonBackgroundColor,
-    width: 80,
+    width: 300,
     borderRadius: 3
   },
   buttonInput: {

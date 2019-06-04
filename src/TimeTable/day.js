@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, AsyncStorage } from "react-native";
 import { PulseIndicator } from "react-native-indicators";
 
 import { colors } from "../theme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default (Day = x =>
   class Day extends PureComponent {
@@ -35,7 +36,7 @@ export default (Day = x =>
       var ttLoader = this.state.subjects.map(z => {
         return (
           <View
-            key={z[3]}
+            key={z[4]}
             style={{
               flexDirection: "row",
               borderWidth: 1,
@@ -54,7 +55,7 @@ export default (Day = x =>
                 color: "#fff"
               }}
             >
-              {z[3]}
+              {z[4]}
             </Text>
             <View style={{ flex: 1, borderLeftWidth: 1, borderColor: "#fff" }}>
               <Text
@@ -63,27 +64,50 @@ export default (Day = x =>
               >
                 {z[1]}
               </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: "#fff",
+                    flex: 1,
+                    marginLeft: 5
+                  }}
+                >
+                  {z[0]}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: "#fff",
+                    flex: 1,
+                    marginLeft: 5
+                  }}
+                >
+                  {z[2]}
+                </Text>
+              </View>
               <Text style={{ fontSize: 10, color: "#fff", marginLeft: 5 }}>
-                {z[0]}
-              </Text>
-              <Text style={{ fontSize: 10, color: "#fff", marginLeft: 5 }}>
-                {z[2]}
+                {z[3]}
               </Text>
             </View>
           </View>
         );
       });
       return this.state.subjects.length ? (
-        <View
+        <ScrollView
           style={{
-            flex: 1,
-            alignItems: "center",
-            // justifyContent: "center",
             backgroundColor: "#000"
           }}
         >
-          {ttLoader}
-        </View>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center"
+            }}
+          >
+            {ttLoader}
+          </View>
+        </ScrollView>
       ) : (
         this._renderSplash()
       );
