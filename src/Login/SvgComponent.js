@@ -1,6 +1,6 @@
 import React from "react";
-import { Svg, Constants } from "expo";
-import { View, StyleSheet } from "react-native";
+import { Svg } from "expo";
+import { View } from "react-native";
 
 const SvgComponent = props => (
   <View>

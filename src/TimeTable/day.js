@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 
-import { View, Text, StyleSheet, AsyncStorage } from "react-native";
+import { View, Text, AsyncStorage } from "react-native";
 
 import { PulseIndicator } from "react-native-indicators";
 

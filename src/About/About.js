@@ -3,10 +3,8 @@ import React, { PureComponent } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   AsyncStorage,
   Button,
-  TouchableHighlight,
   Linking
 } from "react-native";
 import { PulseIndicator } from "react-native-indicators";

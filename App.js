@@ -1,15 +1,9 @@
 import React, { PureComponent } from "react";
 import {
   AsyncStorage,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Text,
-  KeyboardAvoidingView
+  View
 } from "react-native";
-import SvgComponent from "./src/Login/SvgComponent";
-import { PacmanIndicator } from "react-native-indicators";
-import Tabs from "./src";
+import { WaveIndicator } from "react-native-indicators";
 import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
@@ -49,7 +43,7 @@ class AppRoot extends PureComponent {
   }
   _renderSplash() {
     return (
-      <KeyboardAvoidingView
+      <View
         style={{
           flex: 1,
           alignItems: "center",
@@ -59,9 +53,8 @@ class AppRoot extends PureComponent {
         behavior="padding"
         enabled
       >
-        <SvgComponent />
-        <PacmanIndicator color={colors.loaderMain} />
-      </KeyboardAvoidingView>
+        <WaveIndicator color={colors.loaderMain} size={50} />
+      </View>
     );
   }
 }

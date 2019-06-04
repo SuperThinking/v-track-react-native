@@ -1,13 +1,10 @@
 import React from "react";
 
 import Attendance from "./Attendance/Attendance";
-import TimeTable from "./TimeTable/TimeTable";
-import Subject from "./Attendance/Subject";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Day from "./TimeTable/day";
 
 import {
-  createStackNavigator,
   createBottomTabNavigator,
   createAppContainer,
   createMaterialTopTabNavigator

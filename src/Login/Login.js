@@ -1,10 +1,8 @@
 import React, { PureComponent } from "react";
 import Axios from "axios";
 import {
-  View,
   Text,
   StyleSheet,
-  Button,
   AsyncStorage,
   TextInput,
   ToastAndroid,
@@ -12,7 +10,7 @@ import {
   Image
 } from "react-native";
 import SpinnerButton from "react-native-spinner-button";
-import { Provider, connect, MergeProps } from "react-redux";
+import { connect } from "react-redux";
 import { colors } from "../theme";
 import SvgComponent from "./SvgComponent";
 
@@ -34,7 +32,10 @@ class Login extends PureComponent {
     //Validation and Server Request
     // var data = this.state;
     this.setState({ defaultLoading: true });
-    Axios.post("http://192.168.43.38:5000/", this.state)
+    Axios.post(
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index",
+      this.state
+    )
       .then(x => {
         console.log("Content Arrived", JSON.stringify(x.data));
         if (x.data.Error) {
@@ -47,24 +48,28 @@ class Login extends PureComponent {
             50
           );
         } else {
-          var token = "TOKEN";
-          var tt = {};
-          let subs = x.data.subjects.sort();
-          for (j in subs) {
-            let y = subs[j];
-            let tem = y[8].split("+");
-            for (let i in tem) {
-              tt[tem[i]] = [y[0], y[1], tem[i], y[9]];
+          try {
+            var token = "TOKEN";
+            var tt = {};
+            let subs = x.data.subjects.sort();
+            for (j in subs) {
+              let y = subs[j];
+              let tem = y[8].split("+");
+              for (let i in tem) {
+                tt[tem[i]] = [y[0], y[1], tem[i], y[9]];
+              }
             }
+            this.props.authSuccess(
+              token,
+              x.data.name,
+              this.state.id,
+              this.state.pass,
+              subs,
+              tt
+            );
+          } catch (err) {
+            console.log("Unable to process this data");
           }
-          this.props.authSuccess(
-            token,
-            x.data.name,
-            this.state.id,
-            this.state.pass,
-            subs,
-            tt
-          );
         }
       })
       .catch(x => {

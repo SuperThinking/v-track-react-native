@@ -31,7 +31,7 @@ const colors = {
   loginButtonBackgroundColor: "#42B8CB",
   loginButtonTextColor: "#fff",
   loginBackgroundColor: "#3A4C64",
-  loaderMain: "#7977d6",
+  loaderMain: "#f4efef",
   loaderAttendance: "#f46841",
   logoutButtonBackgroundColor: "#901000",
   bottomNavBarBackgroundColor: "#FFFFFF"

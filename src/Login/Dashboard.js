@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 
-import { View, Text, StyleSheet, Button, AsyncStorage } from "react-native";
-import { Provider, connect, MergeProps } from "react-redux";
+import { AsyncStorage } from "react-native";
+import { connect } from "react-redux";
 import Tabs from "../index";
 
 class Dashboard extends PureComponent {

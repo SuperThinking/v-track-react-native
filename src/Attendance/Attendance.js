@@ -3,9 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   ScrollView,
-  SafeAreaView,
   AsyncStorage,
   RefreshControl,
   ToastAndroid
@@ -67,9 +65,19 @@ export default class Attendance extends React.Component {
             {x[3] + " of " + x[2] + " attended"}
           </Text>
           {x[5][0] === "L" ? (
-            <Icon style={styles.textItemValue} name="flask" size={16} color="#000" />
+            <Icon
+              style={styles.textItemValue}
+              name="flask"
+              size={16}
+              color="#000"
+            />
           ) : (
-            <Icon style={styles.textItemValue} name="book" size={16} color="#000" />
+            <Icon
+              style={styles.textItemValue}
+              name="book"
+              size={16}
+              color="#000"
+            />
           )}
         </View>
       </View>
@@ -78,10 +86,13 @@ export default class Attendance extends React.Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
-    Axios.post("http://192.168.43.38:5000/", {
-      id: this.state.id,
-      pass: this.state.pass
-    })
+    Axios.post(
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index",
+      {
+        id: this.state.id,
+        pass: this.state.pass
+      }
+    )
       .then(x => {
         if (x.data.Error) {
           ToastAndroid.showWithGravityAndOffset(
@@ -92,32 +103,39 @@ export default class Attendance extends React.Component {
             50
           );
         } else {
-          var setAtt = new Promise((resolve, reject) => {
-            AsyncStorage.setItem("attendance", JSON.stringify(x.data.subjects.sort()))
-              .then(x => {
-                console.log("Attendance Updated : 1 ");
-                resolve(true);
-              })
-              .catch(err => {
-                console.log(err);
-                ToastAndroid.showWithGravityAndOffset(
-                  "Unable to update attendance",
-                  ToastAndroid.LONG,
-                  ToastAndroid.BOTTOM,
-                  25,
-                  50
-                );
-                reject(err);
-              });
-          });
-          setAtt.then(x => {
-            if (x) {
-              this.getAttendance().then(([items, id, pass]) => {
-                console.log("Attendance Updated : 2");
-                this.setState({ items, id, pass, refreshing: false });
-              });
-            }
-          });
+          try {
+            var setAtt = new Promise((resolve, reject) => {
+              AsyncStorage.setItem(
+                "attendance",
+                JSON.stringify(x.data.subjects.sort())
+              )
+                .then(x => {
+                  console.log("Attendance Updated : 1 ");
+                  resolve(true);
+                })
+                .catch(err => {
+                  console.log(err);
+                  ToastAndroid.showWithGravityAndOffset(
+                    "Unable to update attendance",
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM,
+                    25,
+                    50
+                  );
+                  reject(err);
+                });
+            });
+            setAtt.then(x => {
+              if (x) {
+                this.getAttendance().then(([items, id, pass]) => {
+                  console.log("Attendance Updated : 2");
+                  this.setState({ items, id, pass, refreshing: false });
+                });
+              }
+            });
+          } catch (err) {
+            console.log("Unable to process data");
+          }
         }
       })
       .catch(x => {
