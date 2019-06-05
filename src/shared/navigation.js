@@ -24,12 +24,15 @@ export default (AppNavigation = authenticated =>
           getScreen: () => Dashboard,
           navigationOptions: {
             title: "V-TRACK",
-            headerStyle: { backgroundColor: colors.headerBackgroundColor },
-            headerTintColor: colors.headerTextColor,
             headerTitleStyle: {
               fontFamily: "Lato",
-              fontWeight: "200"
-            }
+              fontWeight: "200",
+              alignSelf: "center"
+            },
+            headerStyle: {
+              backgroundColor: colors.headerBackgroundColor
+            },
+            headerTintColor: colors.headerTextColor
           }
         }
       },

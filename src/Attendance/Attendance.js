@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,13 +9,14 @@ import {
   ToastAndroid
 } from "react-native";
 
+import { connect } from "react-redux";
+
 import ProgressCircle from "react-native-progress-circle";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { PulseIndicator } from "react-native-indicators";
-import { colors } from "../theme";
 import Axios from "axios";
 
-export default class Attendance extends React.Component {
+class Attendance extends PureComponent {
   state = {
     items: "",
     refreshing: false,
@@ -46,7 +47,7 @@ export default class Attendance extends React.Component {
           flexDirection: "column",
           flex: 1,
           borderLeftWidth: 2,
-          borderColor: "#1B367C"
+          borderColor: "#000"
         }}
       >
         <Text numberOfLines={1} style={styles.textItemKey}>
@@ -84,10 +85,13 @@ export default class Attendance extends React.Component {
     );
   };
 
+  stopRefreshAnimation = () => {
+    this.setState({ refreshing: false });
+  };
   _onRefresh = () => {
     this.setState({ refreshing: true });
     Axios.post(
-      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index",
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/attendance",
       {
         id: this.state.id,
         pass: this.state.pass
@@ -95,6 +99,7 @@ export default class Attendance extends React.Component {
     )
       .then(x => {
         if (x.data.Error) {
+          this.stopRefreshAnimation();
           ToastAndroid.showWithGravityAndOffset(
             x.data.Error.message,
             ToastAndroid.LONG,
@@ -105,25 +110,41 @@ export default class Attendance extends React.Component {
         } else {
           try {
             var setAtt = new Promise((resolve, reject) => {
-              AsyncStorage.setItem(
-                "attendance",
-                JSON.stringify(x.data.subjects.sort())
-              )
-                .then(x => {
-                  console.log("Attendance Updated : 1 ");
-                  resolve(true);
-                })
-                .catch(err => {
-                  console.log(err);
-                  ToastAndroid.showWithGravityAndOffset(
-                    "Unable to update attendance",
-                    ToastAndroid.LONG,
-                    ToastAndroid.BOTTOM,
-                    25,
-                    50
-                  );
-                  reject(err);
-                });
+              try {
+                let updatedAtt = this.state.items;
+                console.log(updatedAtt);
+                for (i in updatedAtt) {
+                  let temp = x.data[updatedAtt[i][6]];
+                  if (temp[0] && temp[1] && temp[2]) {
+                    updatedAtt[i][3] = temp[0];
+                    updatedAtt[i][4] = temp[1];
+                    updatedAtt[i][5] = temp[2];
+                  }
+                }
+                AsyncStorage.setItem("attendance", JSON.stringify(updatedAtt))
+                  .then(x => {
+                    console.log("Attendance Updated : 1 ");
+                    resolve(true);
+                  })
+                  .catch(err => {
+                    this.stopRefreshAnimation();
+                    console.log(err);
+                    ToastAndroid.showWithGravityAndOffset(
+                      "Unable to update attendance",
+                      ToastAndroid.LONG,
+                      ToastAndroid.BOTTOM,
+                      25,
+                      50
+                    );
+                    reject(err);
+                  });
+              } catch (err) {
+                this.stopRefreshAnimation();
+                console.log(err);
+                alert(
+                  "Unable to update attendance. Contact Dev if the problem persists."
+                );
+              }
             });
             setAtt.then(x => {
               if (x) {
@@ -139,7 +160,7 @@ export default class Attendance extends React.Component {
         }
       })
       .catch(x => {
-        this.setState({ defaultLoading: false });
+        this.stopRefreshAnimation();
         ToastAndroid.showWithGravityAndOffset(
           "Network Error",
           ToastAndroid.LONG,
@@ -154,43 +175,61 @@ export default class Attendance extends React.Component {
   render() {
     var x = this.state.items
       ? this.state.items.map(x => {
-          return (
-            <View
-              key={x[0] + x[8]}
-              style={
-                x[5] > 80
-                  ? styles.safe
-                  : x[5] >= 75
-                  ? styles.warning
-                  : styles.danger
-              }
-            >
-              <ProgressCircle
-                percent={parseInt(x[5])}
-                radius={35}
-                borderWidth={8}
-                color={
-                  x[5] > 80 ? "#24bc1c" : x[5] >= 75 ? "#bca61c" : "#bc1c1c"
+          try {
+            return (
+              <View
+                key={x[0] + x[8]}
+                style={
+                  x[5] > 80
+                    ? styles.safe
+                    : x[5] >= 75
+                    ? styles.warning
+                    : styles.danger
                 }
-                shadowColor="#cecccc"
-                bgColor="#fff"
-                outerCircleStyle={{
-                  margin: 5
-                }}
               >
-                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                  {x[5] + "%"}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <ProgressCircle
+                    percent={parseInt(x[5])}
+                    radius={35}
+                    borderWidth={4}
+                    color={
+                      x[5] > 80 ? "#24bc1c" : x[5] >= 75 ? "#bca61c" : "#bc1c1c"
+                    }
+                    shadowColor="#cecccc"
+                    bgColor="#fff"
+                    outerCircleStyle={{
+                      margin: 5
+                    }}
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      {x[5] + "%"}
+                    </Text>
+                  </ProgressCircle>
+                </View>
+                {this.xHelper([x[1], x[0], x[4], x[3], x[9], x[8]])}
+              </View>
+            );
+          } catch (err) {
+            return (
+              <View>
+                <Text>
+                  Maybe your attendance data is not loaded yet. (Contact Dev)
                 </Text>
-              </ProgressCircle>
-              {this.xHelper([x[1], x[0], x[4], x[3], x[9], x[8]])}
-            </View>
-          );
+              </View>
+            );
+          }
         })
       : this._renderSplash();
 
     return (
       <ScrollView
-        style={{ backgroundColor: "#000" }}
+        style={{ backgroundColor: this.props.colors.attendanceBackground }}
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -206,58 +245,66 @@ export default class Attendance extends React.Component {
   _renderSplash() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <PulseIndicator color={colors.loaderAttendance} />
+        <PulseIndicator color={this.props.colors.loaderAttendance} />
         <Text children="People : Nothing is more difficult than one-sided love." />
         <Text children="Engineers : 75% attendance maintain karke dikhao!" />
       </View>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center"
-  },
-  danger: {
-    padding: 2,
-    margin: 4,
-    borderColor: "#d68080",
-    backgroundColor: "#fc9797",
-    borderRadius: 3,
-    borderWidth: 1,
-    flexDirection: "row"
-  },
-  warning: {
-    padding: 2,
-    margin: 4,
-    borderColor: "#e5e389",
-    backgroundColor: "#fcfa97",
-    borderRadius: 3,
-    borderWidth: 1,
-    flexDirection: "row"
-  },
-  safe: {
-    padding: 2,
-    margin: 4,
-    backgroundColor: "#97fcae",
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: "#86e09b",
-    flexDirection: "row"
-  },
-  textItemKey: {
-    margin: 5,
-    fontFamily: "RobotoB",
-    flex: 1,
-    fontSize: 17
-  },
-  textItemValue: {
-    margin: 5,
-    fontFamily: "RobotoR",
-    flex: 1,
-    fontSize: 16
-  }
-});
+
+var styles;
+
+const mapStateToProps = (state, ownProps) => {
+  styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#fff",
+      alignItems: "center",
+      flexDirection: "column",
+      justifyContent: "center"
+    },
+    danger: {
+      padding: 2,
+      margin: 4,
+      borderColor: state.Theme.colorData.dangerBorder,
+      backgroundColor: state.Theme.colorData.dangerBack,
+      borderRadius: 3,
+      borderWidth: 1,
+      flexDirection: "row"
+    },
+    warning: {
+      padding: 2,
+      margin: 4,
+      borderColor: state.Theme.colorData.warningBorder,
+      backgroundColor: state.Theme.colorData.warningBack,
+      borderRadius: 3,
+      borderWidth: 1,
+      flexDirection: "row"
+    },
+    safe: {
+      padding: 2,
+      margin: 4,
+      backgroundColor: state.Theme.colorData.safeBack,
+      borderRadius: 3,
+      borderWidth: 1,
+      borderColor: state.Theme.colorData.safeBorder,
+      flexDirection: "row"
+    },
+    textItemKey: {
+      margin: 5,
+      fontFamily: "RobotoB",
+      flex: 1,
+      fontSize: 17
+    },
+    textItemValue: {
+      margin: 5,
+      fontFamily: "RobotoR",
+      flex: 1,
+      fontSize: 16
+    }
+  });
+  return { colors: state.Theme.colorData };
+};
+
+export default connect(mapStateToProps)(Attendance);

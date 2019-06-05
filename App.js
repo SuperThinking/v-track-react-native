@@ -1,8 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  AsyncStorage,
-  View
-} from "react-native";
+import { AsyncStorage, View } from "react-native";
 import { WaveIndicator } from "react-native-indicators";
 import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
@@ -84,8 +81,23 @@ const RootApp = connect(
   mapDispatchToProps
 )(AppRoot);
 
+const initialTheme = { colorData: colors.lightColors };
+const Theme = (state = initialTheme, action) => {
+  switch (action.type) {
+    case "TOGGLE_THEME":
+      switch (action.payload) {
+        case "LIGHT":
+          return { colorData: colors.darkColors };
+        case "DARK":
+          return { colorData: colors.lightColors };
+      }
+    default:
+      return state;
+  }
+};
 const reducers = combineReducers({
-    authState: authStateReducer
+    authState: authStateReducer,
+    Theme
   }),
   store = createStore(reducers);
 

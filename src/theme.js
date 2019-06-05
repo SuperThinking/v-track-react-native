@@ -24,7 +24,7 @@ const colors2 = {
   bottomNavBarBackgroundColor: "#DBDBDB"
 };
 
-const colors = {
+const darkColors = {
   primary: "#000",
   headerTextColor: "#FFFFFF",
   headerBackgroundColor: "#262626",
@@ -33,8 +33,46 @@ const colors = {
   loginBackgroundColor: "#3A4C64",
   loaderMain: "#f4efef",
   loaderAttendance: "#f46841",
-  logoutButtonBackgroundColor: "#901000",
-  bottomNavBarBackgroundColor: "#FFFFFF"
+  logoutButtonBackgroundColor: "#000",
+  bottomNavBarBackgroundColor: "#FFFFFF",
+  attendanceBackground: "#000",
+  ttBackground: "#010E0D",
+  safeBorder: "#009F93",
+  safeBack: "#9DD8A9",
+  warningBorder: "#D1CFD0",
+  warningBack: "#FAD28C",
+  dangerBorder: "#D1CFD0",
+  dangerBack: "#F59E99",
+  ttItemBorder: "#02C3BD",
+  ttItemText: "#FFF"
 };
 
-export { colors };
+const lightColors = {
+  primary: "#000",
+  headerTextColor: "#EE596B",
+  headerBackgroundColor: "#fff",
+  loginButtonBackgroundColor: "#42B8CB",
+  loginButtonTextColor: "#fff",
+  loginBackgroundColor: "#3A4C64",
+  loaderMain: "#f4efef",
+  loaderAttendance: "#f46841",
+  logoutButtonBackgroundColor: "#070707",
+  bottomNavBarBackgroundColor: "#202123",
+  attendanceBackground: "#FFF",
+  ttBackground: "#FFF",
+  safeBorder: "#D1CFD0",
+  safeBack: "#9DD8A9",
+  warningBorder: "#D1CFD0",
+  warningBack: "#FAD28C",
+  dangerBorder: "#D1CFD0",
+  dangerBack: "#F59E99",
+  ttItemBorder: "#D1CFD0",
+  ttItemText: "#433D3F"
+};
+
+// const colors = lightColors
+
+export const colors = {
+  lightColors,
+  darkColors
+};

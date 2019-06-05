@@ -5,11 +5,12 @@ import {
   Text,
   AsyncStorage,
   Button,
-  Linking
+  Linking,
+  Switch
 } from "react-native";
 import { PulseIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
-import { colors } from "../theme";
+import { toggleTheme } from "../actions";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -17,9 +18,20 @@ class About extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: "",
+      switchValue: true
     };
   }
+
+  _handleToggleSwitch = () => {
+    console.log(this.props.colors.attendanceBackground);
+    this.state.switchValue
+      ? this.props.toggleTheme("LIGHT")
+      : this.props.toggleTheme("DARK");
+    this.setState(state => ({
+      switchValue: !state.switchValue
+    }));
+  };
 
   componentDidMount() {
     this.getName().then(name => {
@@ -48,7 +60,7 @@ class About extends PureComponent {
           justifyContent: "center"
         }}
       >
-        <PulseIndicator color={colors.loaderAttendance} />
+        <PulseIndicator color={this.props.colors.loaderAttendance} />
       </View>
     );
   }
@@ -56,6 +68,10 @@ class About extends PureComponent {
   render() {
     return this.state.name ? (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Switch
+          onValueChange={this._handleToggleSwitch}
+          value={this.state.switchValue}
+        />
         <Text
           style={{
             textAlign: "center",
@@ -78,7 +94,7 @@ class About extends PureComponent {
         />
         <Button
           style={{ margin: 20 }}
-          color={colors.logoutButtonBackgroundColor}
+          color={this.props.colors.logoutButtonBackgroundColor}
           title="Logout"
           onPress={this.attemptLogout}
         />
@@ -90,7 +106,7 @@ class About extends PureComponent {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {};
+  return { colors: state.Theme.colorData };
 };
 
 export const actionCreator = (type, payload = null) => ({ type, payload });
@@ -108,6 +124,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         "timeTable"
       ]);
       dispatch(actionCreator("LOGOUT"));
+    },
+    toggleTheme: color => {
+      console.log(color);
+      dispatch(toggleTheme(color));
     }
   };
 };

@@ -3,11 +3,10 @@ import React, { PureComponent } from "react";
 import { View, Text, AsyncStorage } from "react-native";
 
 import { PulseIndicator } from "react-native-indicators";
-
-import { colors } from "../theme";
+import { connect } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default (Day = x =>
+export default (Day = x => {
   class Day extends PureComponent {
     state = {
       subjects: []
@@ -41,7 +40,7 @@ export default (Day = x =>
               flexDirection: "row",
               borderWidth: 1,
               borderRadius: 4,
-              borderColor: "#db3030",
+              borderColor: this.props.colors.ttItemBorder,
               borderStyle: "solid",
               margin: 5,
               padding: 5
@@ -52,15 +51,25 @@ export default (Day = x =>
                 margin: 5,
                 fontWeight: "bold",
                 fontSize: 15,
-                color: "#fff"
+                color: this.props.colors.ttItemText
               }}
             >
               {z[4]}
             </Text>
-            <View style={{ flex: 1, borderLeftWidth: 1, borderColor: "#fff" }}>
+            <View
+              style={{
+                flex: 1,
+                borderLeftWidth: 1,
+                borderColor: this.props.colors.ttItemBorder
+              }}
+            >
               <Text
                 numberOfLines={1}
-                style={{ fontSize: 17, color: "#fff", marginLeft: 5 }}
+                style={{
+                  fontSize: 17,
+                  color: this.props.colors.ttItemText,
+                  marginLeft: 5
+                }}
               >
                 {z[1]}
               </Text>
@@ -68,7 +77,7 @@ export default (Day = x =>
                 <Text
                   style={{
                     fontSize: 10,
-                    color: "#fff",
+                    color: this.props.colors.ttItemText,
                     flex: 1,
                     marginLeft: 5
                   }}
@@ -78,7 +87,7 @@ export default (Day = x =>
                 <Text
                   style={{
                     fontSize: 10,
-                    color: "#fff",
+                    color: this.props.colors.ttItemText,
                     flex: 1,
                     marginLeft: 5
                   }}
@@ -86,7 +95,13 @@ export default (Day = x =>
                   {z[2]}
                 </Text>
               </View>
-              <Text style={{ fontSize: 10, color: "#fff", marginLeft: 5 }}>
+              <Text
+                style={{
+                  fontSize: 10,
+                  color: this.props.colors.ttItemText,
+                  marginLeft: 5
+                }}
+              >
                 {z[3]}
               </Text>
             </View>
@@ -96,7 +111,7 @@ export default (Day = x =>
       return this.state.subjects.length ? (
         <ScrollView
           style={{
-            backgroundColor: "#000"
+            backgroundColor: this.props.colors.ttBackground
           }}
         >
           <View
@@ -119,11 +134,16 @@ export default (Day = x =>
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#000"
+            backgroundColor: this.props.colors.ttBackground
           }}
         >
-          <PulseIndicator color={colors.loaderAttendance} />
+          <PulseIndicator color={this.props.colors.loaderAttendance} />
         </View>
       );
     }
-  });
+  }
+  const mapStateToProps = (state, ownProps) => {
+    return { colors: state.Theme.colorData };
+  };
+  return connect(mapStateToProps)(Day);
+});

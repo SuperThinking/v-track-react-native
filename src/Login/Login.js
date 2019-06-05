@@ -11,9 +11,7 @@ import {
 } from "react-native";
 import SpinnerButton from "react-native-spinner-button";
 import { connect } from "react-redux";
-import { colors } from "../theme";
 import SvgComponent from "./SvgComponent";
-
 class Login extends PureComponent {
   constructor(props) {
     super(props);
@@ -33,7 +31,7 @@ class Login extends PureComponent {
     // var data = this.state;
     this.setState({ defaultLoading: true });
     Axios.post(
-      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index",
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/login",
       this.state
     )
       .then(x => {
@@ -92,7 +90,7 @@ class Login extends PureComponent {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: colors.loginBackgroundColor
+          backgroundColor: this.props.colors.loginBackgroundColor
         }}
         behavior="padding"
         enabled
@@ -125,34 +123,37 @@ class Login extends PureComponent {
     );
   }
 }
-const styles = StyleSheet.create({
-  input: {
-    color: "#fff",
-    fontFamily: "Lato",
-    textAlign: "center",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#FFFFFF",
-    borderRadius: 4,
-    width: 300,
-    fontSize: 20,
-    padding: 10,
-    marginBottom: 20
-  },
-  button: {
-    textAlign: "center",
-    backgroundColor: colors.loginButtonBackgroundColor,
-    width: 300,
-    borderRadius: 3
-  },
-  buttonInput: {
-    textAlign: "center",
-    color: colors.loginButtonTextColor,
-    fontSize: 16
-  }
-});
+
+var styles;
+
 const mapStateToProps = (state, ownProps) => {
-  return {};
+  styles = StyleSheet.create({
+    input: {
+      color: "#fff",
+      fontFamily: "Lato",
+      textAlign: "center",
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderColor: "#FFFFFF",
+      borderRadius: 4,
+      width: 300,
+      fontSize: 20,
+      padding: 10,
+      marginBottom: 20
+    },
+    button: {
+      textAlign: "center",
+      backgroundColor: state.Theme.colorData.loginButtonBackgroundColor,
+      width: 300,
+      borderRadius: 3
+    },
+    buttonInput: {
+      textAlign: "center",
+      color: state.Theme.colorData.loginButtonTextColor,
+      fontSize: 16
+    }
+  });
+  return { colors: state.Theme.colorData };
 };
 
 export const actionCreator = (type, payload = null) => ({ type, payload });
