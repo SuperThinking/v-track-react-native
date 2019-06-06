@@ -5,10 +5,11 @@ import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
-import { authStateReducer, actionCreator } from "./src/Login/Login";
+import { actionCreator } from "./src/Login/Login";
 import { Font } from "expo";
 import { colors } from "./src/theme";
 import toggleTheme from "./src/actions";
+import store from "./src/store/index";
 
 class AppRoot extends PureComponent {
   state = {
@@ -93,25 +94,26 @@ const RootApp = connect(
   mapDispatchToProps
 )(AppRoot);
 
-const initialTheme = { colorData: colors.lightColors };
-const Theme = (state = initialTheme, action) => {
-  switch (action.type) {
-    case "TOGGLE_THEME":
-      switch (action.payload) {
-        case "LIGHT":
-          return { colorData: colors.darkColors };
-        case "DARK":
-          return { colorData: colors.lightColors };
-      }
-    default:
-      return state;
-  }
-};
-const reducers = combineReducers({
-    authState: authStateReducer,
-    Theme
-  }),
-  store = createStore(reducers);
+// const initialTheme = { colorData: colors.lightColors };
+// const Theme = (state = initialTheme, action) => {
+//   switch (action.type) {
+//     case "TOGGLE_THEME":
+//       switch (action.payload) {
+//         case "LIGHT":
+//           return { colorData: colors.darkColors };
+//         case "DARK":
+//           return { colorData: colors.lightColors };
+//       }
+//     default:
+//       return state;
+//   }
+// };
+// const reducers = combineReducers({
+//   authState: authStateReducer,
+//   Theme
+// });
+
+// export const store = createStore(reducers);
 
 export default (appRootComponent = () => (
   <Provider store={store}>

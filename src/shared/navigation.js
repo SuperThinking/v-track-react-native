@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Dashboard from "../Login/Dashboard";
 import Login from "../Login/Login";
 import { colors } from "../theme";
+import store from "../store";
 
 export default (AppNavigation = authenticated =>
   createAppContainer(
@@ -30,9 +31,10 @@ export default (AppNavigation = authenticated =>
               alignSelf: "center"
             },
             headerStyle: {
-              backgroundColor: colors.headerBackgroundColor
+              backgroundColor: store.getState().Theme.colorData
+                .headerBackgroundColor
             },
-            headerTintColor: colors.headerTextColor
+            headerTintColor: store.getState().Theme.colorData.headerTextColor
           }
         }
       },

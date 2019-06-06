@@ -91,7 +91,7 @@ class Attendance extends PureComponent {
   _onRefresh = () => {
     this.setState({ refreshing: true });
     Axios.post(
-      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/attendance",
+      "http://192.168.43.38:9000/.netlify/functions/index/attendance",
       {
         id: this.state.id,
         pass: this.state.pass
@@ -112,7 +112,6 @@ class Attendance extends PureComponent {
             var setAtt = new Promise((resolve, reject) => {
               try {
                 let updatedAtt = this.state.items;
-                console.log(updatedAtt);
                 for (i in updatedAtt) {
                   let temp = x.data[updatedAtt[i][6]];
                   if (temp[0] && temp[1] && temp[2]) {
