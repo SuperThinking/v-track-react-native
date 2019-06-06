@@ -24,10 +24,13 @@ class About extends PureComponent {
   }
 
   _handleToggleSwitch = () => {
-    console.log(this.props.colors.attendanceBackground);
-    this.state.switchValue
-      ? this.props.toggleTheme("LIGHT")
-      : this.props.toggleTheme("DARK");
+    if (this.state.switchValue) {
+      AsyncStorage.setItem("THEME", "LIGHT");
+      this.props.toggleTheme("LIGHT");
+    } else {
+      AsyncStorage.setItem("THEME", "DARK");
+      this.props.toggleTheme("DARK");
+    }
     this.setState(state => ({
       switchValue: !state.switchValue
     }));

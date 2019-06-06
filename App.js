@@ -8,10 +8,12 @@ import { combineReducers, createStore } from "redux";
 import { authStateReducer, actionCreator } from "./src/Login/Login";
 import { Font } from "expo";
 import { colors } from "./src/theme";
+import toggleTheme from "./src/actions";
 
 class AppRoot extends PureComponent {
   state = {
-    fontsLoaded: 0
+    fontsLoaded: 0,
+    themeLoaded: 0
   };
 
   componentDidMount() {
@@ -25,11 +27,20 @@ class AppRoot extends PureComponent {
     }).then(() => {
       this.setState({ fontsLoaded: 1 });
     });
+    AsyncStorage.getItem("THEME")
+      .then(x => {
+        console.log(x);
+        dispatch(toggleTheme(x));
+        this.setState({ themeLoaded: 1 });
+      })
+      .catch(x => {
+        this.setState({ themeLoaded: 1 });
+      });
   }
 
   render() {
     const { app_started, authenticated } = this.props.authState;
-    return app_started && this.state.fontsLoaded
+    return app_started && this.state.fontsLoaded && this.state.themeLoaded
       ? this._renderAppRoot(authenticated)
       : this._renderSplash();
   }
@@ -45,12 +56,12 @@ class AppRoot extends PureComponent {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: colors.loginBackgroundColor
+          backgroundColor: this.props.colors.loginBackgroundColor
         }}
         behavior="padding"
         enabled
       >
-        <WaveIndicator color={colors.loaderMain} size={50} />
+        <WaveIndicator color={this.props.colors.loaderMain} size={50} />
       </View>
     );
   }
@@ -58,7 +69,8 @@ class AppRoot extends PureComponent {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    authState: state.authState
+    authState: state.authState,
+    colors: state.Theme.colorData
   };
 };
 
