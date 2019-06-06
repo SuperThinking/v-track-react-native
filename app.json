@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.superthinkingdev.vtrack",
-      "versionCode": 2.1,
+      "versionCode": 3,
       "icon": "./assets/icon180_1.png",
       "permissions": []
     },
