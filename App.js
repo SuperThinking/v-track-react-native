@@ -4,11 +4,9 @@ import { WaveIndicator } from "react-native-indicators";
 import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
-import { combineReducers, createStore } from "redux";
 import { actionCreator } from "./src/Login/Login";
 import { Font } from "expo";
-import { colors } from "./src/theme";
-import toggleTheme from "./src/actions";
+import { toggleTheme } from "./src/actions";
 import store from "./src/store/index";
 
 class AppRoot extends PureComponent {
@@ -30,8 +28,8 @@ class AppRoot extends PureComponent {
     });
     AsyncStorage.getItem("THEME")
       .then(x => {
-        console.log(x);
-        dispatch(toggleTheme(x));
+        console.log("THEME : !" + x);
+        this.props.toggleTheme(x);
         this.setState({ themeLoaded: 1 });
       })
       .catch(x => {
@@ -85,6 +83,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch(actionCreator("LOGIN_SUCCESS"));
       }
       dispatch(actionCreator("APP_LOADED"));
+    },
+    toggleTheme: color => {
+      dispatch(toggleTheme(color));
     }
   };
 };
@@ -93,27 +94,6 @@ const RootApp = connect(
   mapStateToProps,
   mapDispatchToProps
 )(AppRoot);
-
-// const initialTheme = { colorData: colors.lightColors };
-// const Theme = (state = initialTheme, action) => {
-//   switch (action.type) {
-//     case "TOGGLE_THEME":
-//       switch (action.payload) {
-//         case "LIGHT":
-//           return { colorData: colors.darkColors };
-//         case "DARK":
-//           return { colorData: colors.lightColors };
-//       }
-//     default:
-//       return state;
-//   }
-// };
-// const reducers = combineReducers({
-//   authState: authStateReducer,
-//   Theme
-// });
-
-// export const store = createStore(reducers);
 
 export default (appRootComponent = () => (
   <Provider store={store}>

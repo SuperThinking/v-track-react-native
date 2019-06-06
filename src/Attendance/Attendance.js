@@ -91,7 +91,7 @@ class Attendance extends PureComponent {
   _onRefresh = () => {
     this.setState({ refreshing: true });
     Axios.post(
-      "http://192.168.43.38:9000/.netlify/functions/index/attendance",
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/attendance",
       {
         id: this.state.id,
         pass: this.state.pass
@@ -245,8 +245,6 @@ class Attendance extends PureComponent {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <PulseIndicator color={this.props.colors.loaderAttendance} />
-        <Text children="People : Nothing is more difficult than one-sided love." />
-        <Text children="Engineers : 75% attendance maintain karke dikhao!" />
       </View>
     );
   }

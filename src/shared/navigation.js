@@ -1,7 +1,6 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Dashboard from "../Login/Dashboard";
 import Login from "../Login/Login";
-import { colors } from "../theme";
 import store from "../store";
 
 export default (AppNavigation = authenticated =>
@@ -12,13 +11,6 @@ export default (AppNavigation = authenticated =>
           getScreen: () => Login,
           navigationOptions: {
             header: null
-            // title: "V-TRACK",
-            // headerStyle: { backgroundColor: colors.headerBackgroundColor },
-            // headerTintColor: colors.headerTextColor,
-            // headerTitleStyle: {
-            //   fontFamily: "Lato",
-            //   fontWeight: "200"
-            // }
           }
         },
         dashboard: {

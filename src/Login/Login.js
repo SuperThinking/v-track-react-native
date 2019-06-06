@@ -6,8 +6,7 @@ import {
   AsyncStorage,
   TextInput,
   ToastAndroid,
-  KeyboardAvoidingView,
-  Image
+  KeyboardAvoidingView
 } from "react-native";
 import SpinnerButton from "react-native-spinner-button";
 import { connect } from "react-redux";
@@ -31,7 +30,7 @@ class Login extends PureComponent {
     // var data = this.state;
     this.setState({ defaultLoading: true });
     Axios.post(
-      "http://192.168.43.38:9000/.netlify/functions/index/login",
+      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/login",
       this.state
     )
       .then(x => {
@@ -176,22 +175,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
   };
 };
-
-// export const authStateReducer = (
-//   state = { app_started: false, authenticated: false },
-//   { type, payload }
-// ) => {
-//   switch (type) {
-//     case "LOGIN_SUCCESS":
-//       return { ...state, authenticated: true };
-//     case "LOGOUT":
-//       return { ...state, authenticated: false };
-//     case "APP_LOADED":
-//       return { ...state, app_started: true };
-//     default:
-//       return state;
-//   }
-// };
 
 export default connect(
   mapStateToProps,

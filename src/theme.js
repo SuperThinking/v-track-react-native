@@ -25,6 +25,7 @@ const colors2 = {
 };
 
 const darkColors = {
+  mode: "DARK",
   primary: "#000",
   headerTextColor: "#FFFFFF",
   headerBackgroundColor: "#262626",
@@ -48,6 +49,7 @@ const darkColors = {
 };
 
 const lightColors = {
+  mode: "LIGHT",
   primary: "#000",
   headerTextColor: "#EE596B",
   headerBackgroundColor: "#fff",
@@ -56,7 +58,7 @@ const lightColors = {
   loginBackgroundColor: "#3A4C64",
   loaderMain: "#f4efef",
   loaderAttendance: "#f46841",
-  logoutButtonBackgroundColor: "#070707",
+  logoutButtonBackgroundColor: "#230000",
   bottomNavBarBackgroundColor: "#202123",
   attendanceBackground: "#FFF",
   ttBackground: "#FFF",

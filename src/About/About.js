@@ -37,6 +37,9 @@ class About extends PureComponent {
   };
 
   componentDidMount() {
+    if (this.props.colors.name == "LIGHT") this.setState({ switchValue: true });
+    else this.setState({ switchValue: false });
+
     this.getName().then(name => {
       this.setState({ name });
     });
@@ -129,7 +132,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(actionCreator("LOGOUT"));
     },
     toggleTheme: color => {
-      console.log(color);
+      console.log("THEME : !" + color);
       dispatch(toggleTheme(color));
     }
   };
