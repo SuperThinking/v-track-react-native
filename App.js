@@ -8,6 +8,8 @@ import { actionCreator } from "./src/Login/Login";
 import * as Font from "expo-font";
 import { toggleTheme } from "./src/actions";
 import store from "./src/store/index";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
 
 class AppRoot extends PureComponent {
   state = {
@@ -35,6 +37,14 @@ class AppRoot extends PureComponent {
       .catch(x => {
         this.setState({ themeLoaded: 1 });
       });
+  }
+
+  async allowNotifications() {
+    let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+
+    if (Constants.isDevice && result.status === "granted") {
+      console.log("Notification permissions granted.");
+    }
   }
 
   render() {

@@ -15,6 +15,7 @@ import ProgressCircle from "react-native-progress-circle";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { PulseIndicator } from "react-native-indicators";
 import Axios from "axios";
+import pushNotification from "../pushNotification";
 
 class Attendance extends PureComponent {
   state = {
@@ -25,6 +26,7 @@ class Attendance extends PureComponent {
   };
 
   componentDidMount() {
+    pushNotification.clearAllNotifications();
     this.getAttendance().then(([items, id, pass]) => {
       this.setState({ items, id, pass });
     });

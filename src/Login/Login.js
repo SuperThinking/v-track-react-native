@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import Axios from "axios";
+import pushNotification from "../pushNotification";
 import {
   Text,
   StyleSheet,
@@ -56,6 +57,7 @@ class Login extends PureComponent {
                 tt[tem[i]] = [y[0], y[1], tem[i], y[9]];
               }
             }
+            pushNotification.setReminders(tt);
             this.props.authSuccess(
               token,
               x.data.name,

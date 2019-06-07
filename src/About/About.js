@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import Timer from "../pushNotification";
 import {
   View,
   Text,
@@ -74,7 +73,6 @@ class About extends PureComponent {
   render() {
     return this.state.name ? (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Timer />
         <Switch
           onValueChange={this._handleToggleSwitch}
           value={this.state.switchValue}
