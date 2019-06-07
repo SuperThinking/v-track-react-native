@@ -18,6 +18,7 @@ class AppRoot extends PureComponent {
   };
 
   componentDidMount() {
+    console.disableYellowBox = true;
     this.props.checkLogin();
     Font.loadAsync({
       RobotoB: require("./assets/fonts/Roboto-Black.ttf"),
