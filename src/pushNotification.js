@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { TextInput, View, Keyboard } from "react-native";
-import { Constants, Notifications, Permissions } from "expo";
+import { Notifications } from "expo";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
 
 export default class Timer extends Component {
   onSubmit(e) {
@@ -11,7 +13,7 @@ export default class Timer extends Component {
       body: "done!"
     };
 
-    let sendAfterFiveSeconds = (new Date()-new Date(1970, 1, 1))+5000
+    let sendAfterFiveSeconds = new Date().getTime() + 10000;
 
     const schedulingOptions = {
       time: sendAfterFiveSeconds

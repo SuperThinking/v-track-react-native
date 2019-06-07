@@ -5,7 +5,7 @@ import AppNavigation from "./src/shared/navigation";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import { actionCreator } from "./src/Login/Login";
-import { Font } from "expo";
+import * as Font from "expo-font";
 import { toggleTheme } from "./src/actions";
 import store from "./src/store/index";
 
