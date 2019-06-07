@@ -37,7 +37,7 @@ class About extends PureComponent {
   };
 
   componentDidMount() {
-    if (this.props.colors.name == "LIGHT") this.setState({ switchValue: true });
+    if (this.props.colors.mode == "LIGHT") this.setState({ switchValue: true });
     else this.setState({ switchValue: false });
 
     this.getName().then(name => {
