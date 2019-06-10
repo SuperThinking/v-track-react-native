@@ -4,10 +4,7 @@
     "slug": "V-TRACK-REACT-MOBILE-APP",
     "privacy": "public",
     "sdkVersion": "33.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon512.png",
@@ -19,14 +16,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "assets/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.superthinkingdev.vtrack",
       "versionCode": 3,
-      "icon": "./assets/icon512.png",
-      "permissions": []
+      "icon": "./assets/icon512.png"
+    },
+    "notification":{
+      "icon": "./assets/notifIcon.png"
     },
     "ios": {
       "supportsTablet": true
