@@ -10,6 +10,7 @@ import {
 import { PulseIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
 import { toggleTheme } from "../actions";
+import pushNotification from '../pushNotification'
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -119,6 +120,7 @@ export const actionCreator = (type, payload = null) => ({ type, payload });
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     authlogout: () => {
+      pushNotification.clearAllNotifications();
       AsyncStorage.multiRemove([
         "token",
         "authenticated",

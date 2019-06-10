@@ -171,9 +171,7 @@ function setReminders(tt) {
 }
 
 function clearAllNotifications() {
-  Notifications.dismissAllNotificationsAsync().catch(x => {
-    console.log("Error clearing all notifications", x);
-  });
+  Notifications.cancelAllScheduledNotificationsAsync();
 }
 
 function handleNotification() {
