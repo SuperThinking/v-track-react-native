@@ -16,8 +16,8 @@ class Login extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      id: "16BCE1111",
-      pass: "#23Oct1970#",
+      id: "",
+      pass: "",
       defaultLoading: false
     };
   }
