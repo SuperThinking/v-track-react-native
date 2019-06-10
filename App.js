@@ -18,6 +18,7 @@ class AppRoot extends PureComponent {
   };
 
   componentDidMount() {
+    this.allowNotifications();
     console.disableYellowBox = true;
     this.props.checkLogin();
     Font.loadAsync({
