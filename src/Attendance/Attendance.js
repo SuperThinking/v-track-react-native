@@ -91,7 +91,7 @@ class Attendance extends PureComponent {
   _onRefresh = () => {
     this.setState({ refreshing: true });
     Axios.post(
-      "https://vibrant-payne-77647f.netlify.com/.netlify/functions/index/attendance",
+      "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/attendance",
       {
         id: this.state.id,
         pass: this.state.pass
