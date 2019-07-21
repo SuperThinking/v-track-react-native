@@ -156,7 +156,7 @@ function setReminders(tt) {
 
         const schedulingOptions = {
           time: time,
-          repeat: "week"
+          repeat: "year"
         };
 
         Notifications.scheduleLocalNotificationAsync(
