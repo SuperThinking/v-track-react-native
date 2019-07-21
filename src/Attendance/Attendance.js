@@ -141,7 +141,7 @@ class Attendance extends PureComponent {
                 this.stopRefreshAnimation();
                 console.log(err);
                 alert(
-                  "Unable to update attendance. Contact Dev if the problem persists."
+                  "Unable to update attendance. Try logging in again. Contact Dev if the problem persists."
                 );
               }
             });
