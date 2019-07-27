@@ -7,7 +7,8 @@ import {
   AsyncStorage,
   TextInput,
   ToastAndroid,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Linking
 } from "react-native";
 import SpinnerButton from "react-native-spinner-button";
 import { connect } from "react-redux";
@@ -120,6 +121,20 @@ class Login extends PureComponent {
         >
           <Text style={styles.buttonInput}>Login</Text>
         </SpinnerButton>
+        <Text
+          style={{
+            color: "#e9f0ea",
+            justifyContent: "center",
+            alignItems: "center",
+            bottom: 0,
+            position: "absolute"
+          }}
+          onPress={() =>
+            Linking.openURL("https://v-track.flycricket.io/privacy.html")
+          }
+        >
+          Privacy Policy
+        </Text>
       </KeyboardAvoidingView>
     );
   }

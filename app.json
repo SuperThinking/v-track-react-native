@@ -19,8 +19,9 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.superthinkingdev.vtrack",
-      "versionCode": 3,
-      "icon": "./assets/icon512.png"
+      "versionCode": 7,
+      "icon": "./assets/icon512.png",
+      "permissions": []
     },
     "notification":{
       "icon": "./assets/notifIcon.png"
