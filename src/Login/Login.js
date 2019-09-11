@@ -32,7 +32,8 @@ class Login extends PureComponent {
     // var data = this.state;
     this.setState({ defaultLoading: true });
     Axios.post(
-      "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/login",
+      // "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/login",
+      "http://192.168.43.38:9000/.netlify/functions/index/login",
       this.state
     )
       .then(x => {

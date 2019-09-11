@@ -6,7 +6,8 @@ import {
   ScrollView,
   AsyncStorage,
   RefreshControl,
-  ToastAndroid
+  ToastAndroid,
+  TouchableHighlight
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -15,6 +16,7 @@ import ProgressCircle from "react-native-progress-circle";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { PulseIndicator } from "react-native-indicators";
 import Axios from "axios";
+import { detailedView } from "../actions";
 
 class Attendance extends PureComponent {
   state = {
@@ -29,6 +31,18 @@ class Attendance extends PureComponent {
       this.setState({ items, id, pass });
     });
   }
+
+  _onDetailedView = x => {
+    // this.props.detailedView("YES");
+    let formData = {
+      id: this.state.id,
+      pass: this.state.pass,
+      cc: x[0],
+      ct: x[7],
+      cn: x[6]
+    };
+    this.props.navigation.navigate("detail", { fd: formData });
+  };
 
   getAttendance = () => {
     return new Promise((resolve, reject) => {
@@ -91,7 +105,8 @@ class Attendance extends PureComponent {
   _onRefresh = () => {
     this.setState({ refreshing: true });
     Axios.post(
-      "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/attendance",
+      // "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/attendance",
+      "http://192.168.43.38:9000/.netlify/functions/index/attendance",
       {
         id: this.state.id,
         pass: this.state.pass
@@ -176,43 +191,54 @@ class Attendance extends PureComponent {
       ? this.state.items.map(x => {
           try {
             return (
-              <View
+              <TouchableHighlight
                 key={x[0] + x[8]}
-                style={
-                  x[5] > 80
-                    ? styles.safe
-                    : x[5] >= 75
-                    ? styles.warning
-                    : styles.danger
-                }
+                onPress={() => {
+                  this._onDetailedView(x);
+                }}
               >
                 <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
+                  key={x[0] + x[8]}
+                  style={
+                    x[5] > 80
+                      ? styles.safe
+                      : x[5] >= 75
+                      ? styles.warning
+                      : styles.danger
+                  }
                 >
-                  <ProgressCircle
-                    percent={parseInt(x[5])}
-                    radius={35}
-                    borderWidth={4}
-                    color={
-                      x[5] > 80 ? "#24bc1c" : x[5] >= 75 ? "#bca61c" : "#bc1c1c"
-                    }
-                    shadowColor="#cecccc"
-                    bgColor="#fff"
-                    outerCircleStyle={{
-                      margin: 5
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center"
                     }}
                   >
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                      {x[5] + "%"}
-                    </Text>
-                  </ProgressCircle>
+                    <ProgressCircle
+                      percent={parseInt(x[5])}
+                      radius={35}
+                      borderWidth={4}
+                      color={
+                        x[5] > 80
+                          ? "#24bc1c"
+                          : x[5] >= 75
+                          ? "#bca61c"
+                          : "#bc1c1c"
+                      }
+                      shadowColor="#cecccc"
+                      bgColor="#fff"
+                      outerCircleStyle={{
+                        margin: 5
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                        {x[5] + "%"}
+                      </Text>
+                    </ProgressCircle>
+                  </View>
+                  {this.xHelper([x[1], x[0], x[4], x[3], x[9], x[8]])}
                 </View>
-                {this.xHelper([x[1], x[0], x[4], x[3], x[9], x[8]])}
-              </View>
+              </TouchableHighlight>
             );
           } catch (err) {
             return (
@@ -251,7 +277,14 @@ class Attendance extends PureComponent {
 }
 
 var styles;
-
+const mapDispatchToProps = (dispath, ownProps) => {
+  return {
+    detailedView: option => {
+      console.log("Opening Detailed View", option);
+      dispath(detailedView(option));
+    }
+  };
+};
 const mapStateToProps = (state, ownProps) => {
   styles = StyleSheet.create({
     container: {
@@ -304,4 +337,7 @@ const mapStateToProps = (state, ownProps) => {
   return { colors: state.Theme.colorData };
 };
 
-export default connect(mapStateToProps)(Attendance);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Attendance);

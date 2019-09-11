@@ -3,6 +3,7 @@ import React from "react";
 import Attendance from "./Attendance/Attendance";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Day from "./TimeTable/day";
+import subjectRoute from "./subjectRoute";
 
 import {
   createBottomTabNavigator,
@@ -10,7 +11,7 @@ import {
   createMaterialTopTabNavigator
 } from "react-navigation";
 
-import Timer from './pushNotification';
+import Timer from "./pushNotification";
 
 import { colors } from "./theme";
 import About from "./About/About";
@@ -312,7 +313,7 @@ const Days = createMaterialTopTabNavigator(
 const Tabs = createBottomTabNavigator(
   {
     Attendance: {
-      screen: Attendance,
+      screen: subjectRoute(),
       navigationOptions: () => ({
         tabBarIcon: () => <Icon name="line-chart" size={30} color="#000" />
       })

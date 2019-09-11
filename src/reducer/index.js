@@ -29,10 +29,24 @@ const Theme = (state = initialTheme, action) => {
       return state;
   }
 };
-
+const initialState = false;
+const openDetail = (state = initialState, action) => {
+  switch (action.type) {
+    case "DETAILED_VIEW":
+      switch (action.payload) {
+        case "YES":
+          return true;
+        case "NO":
+          return false;
+      }
+    default:
+      return state;
+  }
+};
 const reducer = combineReducers({
   authState: authStateReducer,
-  Theme
+  Theme,
+  openDetail: openDetail
 });
 
 export default reducer;
