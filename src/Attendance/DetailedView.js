@@ -32,7 +32,8 @@ class DetailedView extends PureComponent {
     var fd = this.props.navigation.getParam("fd");
     let key = fd.id + fd.cc + fd.cn + fd.ct;
     Axios.post(
-      "http://192.168.43.38:9000/.netlify/functions/index/detailedAttendance",
+      "http://ec2-18-191-70-5.us-east-2.compute.amazonaws.com:3000/detailedAttendance",
+      // "http://192.168.43.38:9000/.netlify/functions/index/detailedAttendance",
       fd
     )
       .then(x => {
